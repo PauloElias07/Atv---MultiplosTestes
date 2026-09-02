@@ -12,32 +12,32 @@ jobs:
         python-version: ["3.12", "3.11", "3.10"]
     runs-on: ${{ matrix.os }}
 
-  steps: 
-    - name: Preparar Ambiente
-      uses: actions/checkout@v4
+    steps: 
+      - name: Preparar Ambiente
+        uses: actions/checkout@v4
 
-    - name: Configurar python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: pip
+      - name: Configurar python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
 
-    - name: Instalar dependências
-      run:  pip install -r requirements.txt
+      - name: Instalar dependências
+        run:  pip install -r requirements.txt
 
-    - name: Linter Flake8
-      run: flake8 .
+      - name: Linter Flake8
+        run: flake8 .
 
-    - name: Executar testes unitarios
-      run: pytest testes.py -v
+      - name: Executar testes unitarios
+        run: pytest testes.py -v
 
-    - name: Verificar cobertura de codigo
-      run: pytest --cov=. --cov-fail-under=80
+      - name: Verificar cobertura de codigo
+        run: pytest --cov=. --cov-fail-under=80
 
-    - name: Analise de Seguranca
-      run: bandit -r . -x ./testes.py
+      - name: Analise de Seguranca
+        run: bandit -r . -x ./testes.py
 
-    - name: Verificar Chaves expostas
-      uses: gitleaks/gitleaks-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verificar Chaves expostas
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
